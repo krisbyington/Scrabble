@@ -520,15 +520,15 @@ const getPlayerHandLetters = (gameId, playerId) => {
 }
 
 const getTileDataForHTML = async (gameId) => {
-    var p = [];
+    var promises = [];
     var tileData = [];
     var targetArr = [];
     return game.getInPlayTiles(gameId).then( (tileData)  => {
        
         for(i = 0; i < tileData.length; i++) {
-            p.push(getLetterFromTileId(tileData[i].tile_id));
+            promises.push(getLetterFromTileId(tileData[i].tile_id));
         }
-        return Promise.all(p)
+        return Promise.all(promises)
         .then(results => {
             for(i=0; i < tileData.length; i++){
                 let obj = {};

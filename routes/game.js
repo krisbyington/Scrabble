@@ -48,15 +48,15 @@ router.get("/:id", async (request, response) => {
     var gameId = request.params.id;
   }
 
-  let refreshed_tile_data_for_HTML = [];
+  let tile_data_for_HTML = [];
 
   gameTiles.getTileDataForHTML(gameId)
     .then(results => {
-      for (const x of results) {
-        refreshed_tile_data_for_HTML.push(x);
-      }
+      tile_data_for_HTML = results;
+
+      console.log("/:id", tile_data_for_HTML);
       request.app.get("io").sockets.emit('load-board-data', {
-        boardData: refreshed_tile_data_for_HTML
+        boardData: tile_data_for_HTML
       })
     }).catch(err => {
       console.log("ERROR", err)
@@ -87,11 +87,10 @@ router.get("/:id", async (request, response) => {
                           currentUser = gameUsers[i];
                         }
                       }
-
                       if (currentUser != undefined) {
-                        //need to ad () for the comparison 
-                        var turn = currentTurn == currentUser.order;
+                        var turn = (currentTurn == currentUser.order);
                         //what is going on with the empty strting? 
+                        //shouldnt it emit to the room + id ??? 
                         request.app.get("io").emit("", { turn: turn });
                       }
                     })
@@ -109,6 +108,7 @@ router.get("/:id", async (request, response) => {
                         messages: chat.getMessages(),
                         userId: userId,
                       });
+                      console.log("pageload data, ", tile_data_for_HTML)
                     });
                 })
             });
@@ -190,7 +190,7 @@ router.post("/:id/playWord", async (request, response) => {
         }
       }
     }).catch(err => {
-      console.log("ERR GETTING GAME USERS", err);
+      console.log("ERROR GETTING GAME USERS", err);
     })
   if (validTurn == false) {
     request.app.get("io").sockets.to("room" + id).emit("invalid-turn");
@@ -231,6 +231,7 @@ router.post("/:id/playWord", async (request, response) => {
                                           gameTiles.parsePlayerHandForHTML(id, userId)
                                             .then(results => {
                                               let player_hand = results;
+                                              console.log("valid-word data, ", tile_data_for_HTML);
                                               request.app.get("io").sockets.to("room" + id).emit("valid-word", {
                                                 playerId: userId,
                                                 playerScore: updatedScore,

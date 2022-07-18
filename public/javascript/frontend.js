@@ -23,7 +23,7 @@ const submitWord = async () => {
     credentials: "include",
   })
     .then((response) => {
-      word = []
+      word = []//??
       return response.json()
 
     })
@@ -156,16 +156,16 @@ const replenishHand = (data) => {
   }
 }
 
-const fillBoardFromDB = (gameState) => {
+const fillBoardFromDB = (boardTileData) => {
   let allSquares = document.getElementById("game-board").children;
-  for (i = 0; i < gameState.length; i++) {
+  for (i = 0; i < boardTileData.length; i++) {
     for (j = 0; j < allSquares.length; j++) {
-      if ((gameState[i].x_coordinate == allSquares[j].dataset.x) &&
-        (gameState[i].y_coordinate == allSquares[j].dataset.y) &&
+      if ((boardTileData[i].x_coordinate == allSquares[j].dataset.x) &&
+        (boardTileData[i].y_coordinate == allSquares[j].dataset.y) &&
         (!allSquares[j].classList.contains("played-square"))) {
         let letterP = document.createElement("p");
         allSquares[j].classList.add("played-square");
-        letterP.innerText = gameState[i].letter;
+        letterP.innerText = boardTileData[i].letter;
         allSquares[j].appendChild(letterP);
       }
     }
@@ -186,6 +186,9 @@ async function getUserInput() {
     console.log(err)
   })
 }
+//socket.on("valid-word", async data => {
+// set a new listener point for this then send tileDataforHTML for each page load, 
+// I think we only need to send that but I might wand to send hand data as well 
 
 socket.on("valid-word", async data => {
   game_id = data.id
@@ -210,8 +213,13 @@ socket.on("valid-word", async data => {
     });
 })
 
+socket.on("load-board-data", boardTileData => {
+  console.log("loading board data on socket");
+  fillBoardFromDB(boardTileData)
+});
+
 window.onload = (event) => {
   const url = (event.target.URL)
   const targetIdx = url.indexOf('/game')
-  const id = url.slice(targetIdx + 6)
+  const id = url.slice(targetIdx + 6);
 }
