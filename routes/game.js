@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router();// look into why this works 
 const game = require("../db/game");
 const gameBoard = require("../models/gameBoard");
 const scoreBoard = require("../models/scoreBoard");
@@ -47,21 +47,7 @@ router.get("/:id", async (request, response) => {
     var userId = request.session.user_id;
     var gameId = request.params.id;
   }
-
-  let tile_data_for_HTML = [];
-
-  gameTiles.getTileDataForHTML(gameId)
-    .then(results => {
-      tile_data_for_HTML = results;
-
-      console.log("/:id", tile_data_for_HTML);
-      request.app.get("io").sockets.emit('load-board-data', {
-        boardData: tile_data_for_HTML
-      })
-    }).catch(err => {
-      console.log("ERROR", err)
-    })
-
+  
   let playerHand = [];
   var currentTurn;
   var cells;
@@ -108,7 +94,6 @@ router.get("/:id", async (request, response) => {
                         messages: chat.getMessages(),
                         userId: userId,
                       });
-                      console.log("pageload data, ", tile_data_for_HTML)
                     });
                 })
             });
@@ -118,8 +103,24 @@ router.get("/:id", async (request, response) => {
     .catch((error) => {
       Promise.reject(error);
     });
-})
+});
 
+router.post("/:id/updateBoard", async (request, response) => {
+  let gameId;
+  if (request.session) {
+    gameId = request.params.id;
+    console.log("session id in second callback", gameId);
+  }
+  gameTiles.getTileDataForHTML(gameId)
+      .then(results => {
+        let tile_data_for_HTML = results;
+        request.app.get("io").sockets.to("room" + gameId).emit('load-board-data', {
+          boardTileData: tile_data_for_HTML
+        })
+      }).catch(err => {
+        console.log("ERROR", err)
+      })
+});
 
 router.get("/:id/join", (request, response) => {
   if (request.session) {
@@ -231,7 +232,7 @@ router.post("/:id/playWord", async (request, response) => {
                                           gameTiles.parsePlayerHandForHTML(id, userId)
                                             .then(results => {
                                               let player_hand = results;
-                                              console.log("valid-word data, ", tile_data_for_HTML);
+                                              console.log("valid-word data, ", tile_data_for_HTML);///////////////////////////////
                                               request.app.get("io").sockets.to("room" + id).emit("valid-word", {
                                                 playerId: userId,
                                                 playerScore: updatedScore,

@@ -6,34 +6,6 @@ const selection = [];
 const words = [];
 let word = [];
 
-const slotTaken = (x, y) => {
-  const found = words.find((entry) => entry.x === x && entry.y === y);
-  return found !== undefined;
-};
-
-const submitWord = async () => {
-  if (word.length === 0) {
-    alert("You must enter a word.");
-    return;
-  }
-  return await fetch(`${window.location.pathname}/playWord`, {
-    body: JSON.stringify(word),
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-  })
-    .then((response) => {
-      word = []//??
-      return response.json()
-
-    })
-    .catch((error) => {
-      console.log(error);
-      Promise.reject(error)
-    });
-};
-
-
 document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
@@ -102,6 +74,83 @@ document
     }
   });
 
+const updateBoard = async () =>{
+  return await fetch(`${window.location.pathname}/updateBoard`,{
+    method:"post"
+  })
+}
+
+const submitWord = async () => {
+  if (word.length === 0) {
+    alert("You must enter a word.");
+    return;
+  }
+  return await fetch(`${window.location.pathname}/playWord`, {
+    body: JSON.stringify(word),
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  })
+    .then((response) => {
+      word = []//??
+      return response.json()
+
+    })
+    .catch((error) => {
+      console.log(error);
+      Promise.reject(error)
+    });
+};
+
+//what is the point of this 
+//I think it works because it just pings to /game/userInfo and then grabs session data 
+async function getUserInput() {
+  return await fetch('/userInfo').then((result) => {
+    return result.json()
+  }).catch(err => {
+    console.log(err)
+  })
+}
+
+socket.on("invalid-word", async data => {
+  const x = await getUserInput()
+  const username = x.username
+  window.alert(`invalid word was played! \nPLEASE REFRESH TO TRY AGAIN`)
+})
+
+socket.on("valid-word", async data => {
+  game_id = data.id
+  fillBoardFromDB(data.tileDataForHTML);
+  replenishHand(data);
+  const x = await getUserInput()
+  const username = x.username
+  const score = data.playerScore[0].score
+  alert(` Valid Word! Current Player has ${score} points.`);
+  return await fetch(`${window.location.pathname}/nextTurn`, {
+    body: JSON.stringify(word),
+    method: "post",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+  })
+    .then((response) => {
+      return response.json()
+    })
+    .catch((error) => {
+      console.log(error);
+      Promise.reject(error)
+    });
+})
+
+socket.on("load-board-data", boardTileData => {
+  console.log("loading board data on socket",boardTileData);
+  fillBoardFromDB(boardTileData.boardTileData)
+});
+
+const slotTaken = (x, y) => {
+  const found = words.find((entry) => entry.x === x && entry.y === y);
+  return found !== undefined;
+};
+
 const isYourTurn = (turnValue) => {
   if (turnValue) {
     let bagWrapper = document.querySelector(".bag-icon-wrapper");
@@ -163,63 +212,21 @@ const fillBoardFromDB = (boardTileData) => {
       if ((boardTileData[i].x_coordinate == allSquares[j].dataset.x) &&
         (boardTileData[i].y_coordinate == allSquares[j].dataset.y) &&
         (!allSquares[j].classList.contains("played-square"))) {
-        let letterP = document.createElement("p");
         allSquares[j].classList.add("played-square");
+        let letterP = document.createElement("p");
         letterP.innerText = boardTileData[i].letter;
+        let valueP = document.createElement("p");
+        valueP.innerText = boardTileData[i].value;
         allSquares[j].appendChild(letterP);
+        allSquares[j].appendChild(valueP);
       }
     }
   }
 }
 
-
-socket.on("invalid-word", async data => {
-  const x = await getUserInput()
-  const username = x.username
-  window.alert(`invalid word was played! \nPLEASE REFRESH TO TRY AGAIN`)
-})
-
-async function getUserInput() {
-  return await fetch('/userInfo').then((result) => {
-    return result.json()
-  }).catch(err => {
-    console.log(err)
-  })
-}
-//socket.on("valid-word", async data => {
-// set a new listener point for this then send tileDataforHTML for each page load, 
-// I think we only need to send that but I might wand to send hand data as well 
-
-socket.on("valid-word", async data => {
-  game_id = data.id
-  fillBoardFromDB(data.tileDataForHTML);
-  replenishHand(data);
-  const x = await getUserInput()
-  const username = x.username
-  const score = data.playerScore[0].score
-  alert(` Valid Word! Current Player has ${score} points.`);
-  return await fetch(`${window.location.pathname}/nextTurn`, {
-    body: JSON.stringify(word),
-    method: "post",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-  })
-    .then((response) => {
-      return response.json()
-    })
-    .catch((error) => {
-      console.log(error);
-      Promise.reject(error)
-    });
-})
-
-socket.on("load-board-data", boardTileData => {
-  console.log("loading board data on socket");
-  fillBoardFromDB(boardTileData)
-});
-
 window.onload = (event) => {
   const url = (event.target.URL)
   const targetIdx = url.indexOf('/game')
   const id = url.slice(targetIdx + 6);
+  updateBoard();
 }

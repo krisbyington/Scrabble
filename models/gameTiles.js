@@ -23,7 +23,7 @@ const getInitialHand = async (gameId, playerId) => {
     })
 }
 
-
+//change to get letter value 
 const getLetterWorth = (letter) => {
     return db.one(`SELECT value FROM tiles WHERE letter=$1 LIMIT 1`, [letter])
     .then(result => {
@@ -35,7 +35,7 @@ const getLetterWorth = (letter) => {
     })
 }
 
-
+//////////////////////////////////////////////
 const getLetterFromCoords = (coords, gameId) => {
     return db.one(`SELECT tile_id FROM game_tiles WHERE x_coordinate=$1 AND y_coordinate=$2 AND game_id=$3 `,
     [coords.x, coords.y, gameId])
@@ -49,7 +49,6 @@ const getLetterFromCoords = (coords, gameId) => {
 }
  
  
-
 const getLetterFromTileId = async (tile_id) => {
     return db.one(`SELECT letter FROM tiles WHERE id=$1`, [tile_id])
     .then(result => {
@@ -62,7 +61,6 @@ const getLetterFromTileId = async (tile_id) => {
   }
   
 const getCoordinatesFromTileId = async (game_id, tile_id) => {
- 
     return db.any(`SELECT x_coordinate, y_coordinate FROM game_tiles WHERE game_id=$1 AND tile_id=$2`,
     [game_id,tile_id])
     .then(result => {
@@ -72,15 +70,14 @@ const getCoordinatesFromTileId = async (game_id, tile_id) => {
         console.log("ERROR IN getCoordinatesFromTileId in models/gameTiles");
         return Promise.resolve(err);
     })
- 
   }
   
-  const parsePlayerHandForHTML = (gameId, userId) => {
-    let tileIdList = [];
-    let letterList = [];
-    let valueList = [];
+const parsePlayerHandForHTML = (gameId, userId) => {
+let tileIdList = [];
+let letterList = [];
+let valueList = [];
 
-    return game.getPlayerHand(gameId, userId)
+return game.getPlayerHand(gameId, userId)
     .then(handData => {
         tileIdList = handData;
         let promises = [];
@@ -103,8 +100,9 @@ const getCoordinatesFromTileId = async (game_id, tile_id) => {
             return results;
         })
     })
-    .then(value_list => {
+    .then(() => {
         let htmlData = [];
+        
         for (i=0;i<tileIdList.length;i++) {
             let letter = letterList[i];
             let value = valueList[i];
@@ -116,7 +114,6 @@ const getCoordinatesFromTileId = async (game_id, tile_id) => {
 }
 
 const getScoreFromWords = (arr) => {
-
     let words = [];
     for (let word of arr) {
         words.push(getWordWorth(word));
@@ -133,7 +130,7 @@ const getScoreFromWords = (arr) => {
         Promise.resolve(err);
     })
 }
-
+//change to word value 
 const getWordWorth = (word) => {
     let letters = [];
     let upperWord = word.toUpperCase();
@@ -158,18 +155,15 @@ const getWords = (coordsArray, gameId) => {
     
     let firstTurn = false
     let checkSurrounding = false
+    
     game.getInPlayTiles(gameId).then(results => {
         console.log("RESULTS OF INITIAL GET IN PLAY TILES CHECK " , results)
         if(results.length == 0 && coordsArray.length < 2){
-            
            return "invalid move";
         }
-
-
         if(firstTurn == false && coordsArray.length >= 1){
             checkSurrounding = true
         }
-
     }).catch(err => {
         console.log("ERR", err)
     })
@@ -522,30 +516,55 @@ const getPlayerHandLetters = (gameId, playerId) => {
 const getTileDataForHTML = async (gameId) => {
     var promises = [];
     var tileData = [];
-    var targetArr = [];
-    return game.getInPlayTiles(gameId).then( (tileData)  => {
-       
-        for(i = 0; i < tileData.length; i++) {
-            promises.push(getLetterFromTileId(tileData[i].tile_id));
-        }
-        return Promise.all(promises)
-        .then(results => {
-            for(i=0; i < tileData.length; i++){
-                let obj = {};
-                obj["tile_id"] = tileData[i].tile_id;
-                obj["x_coordinate"] = tileData[i].x_coordinate;
-                obj["y_coordinate"]  = tileData[i].y_coordinate;
-                obj["letter"] = results[i].letter;
-                targetArr.push(obj);
+    var letterList = [];
+    var valueList = [];
+    var tileObjectList = [];
+    return game.getInPlayTiles(gameId)
+        .then( (tileData)  => {
+            for(i = 0; i < tileData.length; i++) {
+                promises.push(getLetterFromTileId(tileData[i].tile_id));
             }
-            return Promise.resolve(targetArr);
+            return Promise.all(promises)
+            .then(results => {
+                letterList = results;
+                promises = [];
+                for(i = 0; i < tileData.length; i++) {
+                    promises.push(getLetterWorth(letterList[i].letter));
+                }
+                return Promise.all(promises)
+                .then(results => {
+                valueList = results;
+                for(i=0; i < tileData.length; i++){
+                    let obj = {};
+                    obj["tile_id"] = tileData[i].tile_id;
+                    obj["x_coordinate"] = tileData[i].x_coordinate;
+                    obj["y_coordinate"]  = tileData[i].y_coordinate;
+                    obj["letter"] = letterList[i].letter;
+                    obj["value"] = valueList[i];
+                    
+                    tileObjectList.push(obj);
+                }
+                return Promise.resolve(tileObjectList);
+            })
+        }).catch(err => {
+            console.log(err); 
         })
-    }).catch(err => {
-        console.log(err); 
-    })
-
+})
 }
+
  
+// for(i=0; i < tileData.length; i++){
+//     let obj = {};
+//     obj["tile_id"] = tileData[i].tile_id;
+//     obj["x_coordinate"] = tileData[i].x_coordinate;
+//     obj["y_coordinate"]  = tileData[i].y_coordinate;
+//     obj["letter"] = results[i].letter;
+    
+//     targetArr.push(obj);
+// }
+// return Promise.resolve(targetArr);
+
+
 function includesJson(arr, target) {
     for ( const item  of arr){
         if(item.x == target.x && item.y == target.y){
@@ -555,11 +574,6 @@ function includesJson(arr, target) {
     return -1;
 }
 
-
-
- 
-
- 
 function sortJsonByX(arr){
     
     let deep_cpy = [...arr]
