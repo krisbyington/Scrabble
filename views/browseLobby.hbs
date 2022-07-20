@@ -11,16 +11,16 @@
     </div>
     <div class="lobby-search">
         {{#each lobbies}}
-        <div class="lobby" id="lobby">
-            <div class="lobby-section" id="lobby-id">
+        <div class="lobby" id="lobby-{{id}}">
+            <div class="lobby-section">
                 {{id}}
             </div>
             <div class="lobby-section">
                 {{in_lobby}}
             </div>
-            <button class="button-section" id="join-lobby">
-                Join
-            </button>
+            <a href="lobby/{{id}}">
+                <button  class="button-section" >Join</button>
+            </a>
         </div>
         {{/each}}
     </div>

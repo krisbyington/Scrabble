@@ -1,5 +1,5 @@
 var express = require('express');
-const { isWordValid } = require('../models/gameBoard');
+const { isWordValid } = require('../models/gameBoard');//why is this here 
 var router = express.Router();
 const db = require("../db/index");
 
@@ -24,6 +24,10 @@ router.get("/login", (request, response) => {
 
 router.get("/game", (request, response) => {
   response.render('game');
+});
+
+router.get("/lobby", (request, response) => {
+  response.render('lobby');
 });
 
 router.get('/userInfo', async function (req, res) {
