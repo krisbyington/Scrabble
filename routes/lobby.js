@@ -17,12 +17,10 @@ router.get("/", (request, response) => {
 
 router.get("/:id", async (request, response) => {
   var gameID = request.params.id;
-  console.log("top of routes/lobby/:id", request.params.id);
   var userID = request.session.user_id;
   var gameUsers;
   var gameData;
   var highestOrder = 0;
-
   gameData = await game.getGameById(gameID);
   if(gameData.in_lobby == true){
     gameUsers = await game.getGameUsers2(gameID);
@@ -86,11 +84,36 @@ router.use("/startGame/:id", async (request, response) => {
 });
 
 router.use("/ready/:id", async (request, response) => {
-  response.send();
-})
+  let userId = request.session.user_id;
+  let gameId = request.params.id
+  let result = await game.makeReady(gameId, userId);
+  let isReady = result[0].is_ready;
+  if(isReady){
+    username = await game.getUserNameFromId(userId);
+    request.app.get("io").sockets.to("lobby" + request.params.id).emit("madeReady", {username});
+    console.log(username);
+  }
+});
 
 router.use("/unready/:id", async (request, response) => {
-  response.send();
+  let userId = request.session.user_id;
+  let gameId = request.params.id
+  let result = await game.makeUnready(gameId, userId);
+  let isReady = result[0].is_ready;
+  if(!isReady){
+    username = await game.getUserNameFromId(userId);
+    request.app.get("io").sockets.to("lobby" + request.params.id).emit("madeUnready", {username});
+    console.log(username);
+  }
+  // .then(results => {
+  //   console.log("db returning", results[0].is_ready);
+  //   if(!results[0].is_ready){
+  //     username = game.getUserNameFromId(userId);
+  //     console.log(username);
+  //     request.app.get("io").sockets.to("lobby" + request.params.id).emit("madeUnready");
+  //   }
+  // });
 })
+
 module.exports = router;
 

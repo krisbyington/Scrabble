@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();// look into why this works 
+const router = express.Router();
 const game = require("../db/game");
 const gameBoard = require("../models/gameBoard");
 const scoreBoard = require("../models/scoreBoard");
@@ -46,7 +46,6 @@ router.get("/:id", async (request, response) => {
   if (request.session) {
     var userId = request.session.user_id;
     var gameId = request.params.id;
-    console.log("inside /ID route ", userId,gameId);
   }
   
   let playerHand = [];
@@ -87,7 +86,6 @@ router.get("/:id", async (request, response) => {
                     .then(playerTiles => {
                       playerHand = playerTiles;
                     }).then(() => {
-                      console.log("about to render page ")
                       response.render("game", {
                         style: "gameStyle",
                         boardSquares: cells,
@@ -107,7 +105,7 @@ router.get("/:id", async (request, response) => {
     });
 });
 
-router.post("/:id/updateBoard", async (request, response) => {
+router.use("/:id/updateBoard", async (request, response) => {
   let gameId;
   if (request.session) {
     gameId = request.params.id;

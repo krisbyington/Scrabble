@@ -4,10 +4,11 @@ const { addSocket } = require('../utils/socket_store');
 const io = socketio();
 
 io.on('connection', socket => {
+  //you need to comb through all of this 
   const cook = socket.handshake.headers.cookie
   const ref = socket.handshake.headers.referer
   socket.on('disconnect', () => {
-    console.log('disconnected!!')
+    console.log('socket disconnected!!')
   })
   const user = cook
   cookieObj = {};

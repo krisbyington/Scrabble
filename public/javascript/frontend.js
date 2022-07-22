@@ -75,9 +75,8 @@ document
   });
 
 const updateBoard = async () =>{
-  //figure out why this works and the startgame functoin didnt work in lobby.js 
   return await fetch(`${window.location.pathname}/updateBoard`,{
-    method:"post"
+    method:"put"
   })
 }
 
