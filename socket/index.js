@@ -52,7 +52,7 @@ io.on('connection', socket => {
   };
   if (lobbyId) {
     socket.join('lobby' + lobbyId)
-  }
+  };
 
   socket.on('ping', () => {
     io.emit('pong')

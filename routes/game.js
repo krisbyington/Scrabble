@@ -46,6 +46,7 @@ router.get("/:id", async (request, response) => {
   if (request.session) {
     var userId = request.session.user_id;
     var gameId = request.params.id;
+    console.log("inside /ID route ", userId,gameId);
   }
   
   let playerHand = [];
@@ -86,6 +87,7 @@ router.get("/:id", async (request, response) => {
                     .then(playerTiles => {
                       playerHand = playerTiles;
                     }).then(() => {
+                      console.log("about to render page ")
                       response.render("game", {
                         style: "gameStyle",
                         boardSquares: cells,
@@ -109,7 +111,6 @@ router.post("/:id/updateBoard", async (request, response) => {
   let gameId;
   if (request.session) {
     gameId = request.params.id;
-    console.log("session id in second callback", gameId);
   }
   gameTiles.getTileDataForHTML(gameId)
       .then(results => {

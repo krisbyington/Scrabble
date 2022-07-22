@@ -11,17 +11,20 @@
     </div>
     <div class="lobby-search" id="lobby-search">
         {{#each lobbies}}
-        <div class="lobby" id="lobby-{{id}}">
-            <div class="lobby-section">
-                {{id}}
-            </div>
-            <div class="lobby-section">
-                {{in_lobby}}
-            </div>
-            <a href="lobby/{{id}}">
-                <button  class="button-section" >Join</button>
-            </a>
-        </div>
+            {{#if in_lobby}}
+                <div class="lobby" id="lobby-{{id}}">
+                    <div class="lobby-section">
+                        {{id}}
+                    </div>
+                    <div class="lobby-section">
+                        {{in_lobby}}
+                    </div>
+                    <a href="lobby/{{id}}">
+                        {{!-- can add an input="submit" to get rid of the a tag  --}}
+                        <button  class="button-section" >Join</button>
+                    </a>
+                </div>
+            {{/if}}
         {{/each}}
     </div>
 </div>

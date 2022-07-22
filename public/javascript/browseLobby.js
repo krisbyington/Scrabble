@@ -21,7 +21,7 @@ const createResult = (lobbyId) => {
 
     let inLobby = document.createElement("div");
     inLobby.className = "lobby-section";
-
+    //this might change a bit 
     let anchor = document.createElement("a");
     anchor.setAttribute('href', `lobby/${lobbyId}`);
 

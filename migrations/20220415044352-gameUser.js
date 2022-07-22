@@ -16,6 +16,10 @@ module.exports = {
           key: "id",
         },
       },
+      is_ready: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       order: {
         type: Sequelize.INTEGER,
         allowNull: false,

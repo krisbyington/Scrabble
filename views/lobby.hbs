@@ -1,22 +1,13 @@
 <h1 class="lobby-title">Game Lobby</h1>
 
-<form method="POST" action="/users/logout"> <button type="submit" value="Submit"> log out </button> </form>
-
-<section class="lobby-chat-container"> {{!-- change this class name --}}
   <div class="lobby-window">
-    <div class="inner-lobby">
+    <div class="lobby-info">
       <div class="lobby-header">
         <div class="player-section">
           <p class="player-text">Username</p>
         </div>
         <div class="player-section">
-          <p class="player-text">Order</p>
-        </div>
-        <div class="player-section">
-          <p class="player-text">Wins</p>
-        </div>
-        <div class="player-section">
-          <p class="player-text">Highscore</p>
+          <p class="player-text">Ready</p>
         </div>
       </div>
       {{#each players}}
@@ -25,28 +16,25 @@
           <p class="player-text">{{username}}</p>
         </div>
         <div class="player-section">
-          <p class="player-text">{{order}}</p>
+          <p class="player-text">Not Ready</p>
         </div>
-        <div class="player-section">
-          <p class="player-text">{{wins}}</p>
-        </div>
-        <div class="player-section">
-          <p class="player-text">{{high_score}}</p>
-        </div>
-      </div>
       {{/each}}
-      <button class="start-button" onclick="startGame({{gameId}})">Start Game</button>
-      <button class="leave-button" onclick="leave({{gameId}})">Leave</button>
     </div>
   </div>
-</section>
-<script>
-  function startGame(gameId) {
-    window.location.href = `/game/${gameId}`, true;
-  }
-</script>
-<script>
-  function leave(gameId) {
-    window.location.href = `/lobby/leave/${gameId}`, true;
-  }
-</script>
+  <div class="lobby-button-container">
+    <form class="lobby-form" action="/lobby/startGame/{{gameId}}" >
+      <button class="lobby-button" type="submit">Start Game</button>
+    </form>
+    <form class="lobby-form" action="/lobby/ready/{{gameId}}">
+      <button class="lobby-button"> Ready</button>
+    </form>
+    <form class="lobby-form" action="/lobby/unready/{{gameId}}">
+      <button class="lobby-button" type="submit">UnReady</button>
+    </form>
+    <form class="lobby-form" action="/lobby/leave/{{gameId}}">
+      <button class="lobby-button" type="submit">Leave</button>
+    </form>
+    <form class="lobby-form" method="POST" action="/users/logout">
+      <button class="lobby-button" type="submit">Sign Out</button>
+    </form>
+</div>

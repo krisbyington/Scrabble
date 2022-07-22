@@ -66,6 +66,7 @@ var gameRouter = require("./routes/game");
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+//why is the only one handed session middleware? 
 app.use("/lobby", session_middleware, lobbyRouter);
 app.use("/browseLobby", browseLobbyRouter);
 app.use("/game", gameRouter);

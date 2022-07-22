@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require('../db');
 const session = require('express-session');
-const Game = require("../db/game");
+const game = require("../db/game");
 
 router.get("/", (request, response) => {
 
@@ -17,17 +17,16 @@ router.get("/", (request, response) => {
 
 router.get("/:id", async (request, response) => {
   var gameID = request.params.id;
+  console.log("top of routes/lobby/:id", request.params.id);
   var userID = request.session.user_id;
   var gameUsers;
-  var game;
+  var gameData;
   var highestOrder = 0;
 
-  gameData = await Game.getGameById(gameID);
-  console.log("gameData", gameData);
+  gameData = await game.getGameById(gameID);
   if(gameData.in_lobby == true){
-    gameUsers = await Game.getGameUsers2(gameID);
+    gameUsers = await game.getGameUsers2(gameID);
   }
-  console.log("gameUsers", gameUsers);
   let userInLobby = false;
   for (i = 0; i < gameUsers.length; i++) {
     if (gameUsers[i].user_id == userID) {
@@ -38,9 +37,10 @@ router.get("/:id", async (request, response) => {
     for (i = 0; i < gameUsers.length; i++) {
       highestOrder = Math.max(highestOrder, gameUsers[i].order);
     }
-    await Game.joinGame(gameID, userID);
-    await Game.updateGameUserOrder(gameID, userID, highestOrder + 1);
-    gameUsers = await Game.getGameUsers2(gameID);
+    await game.joinGame(gameID, userID);
+    await game.updateGameUserOrder(gameID, userID, highestOrder + 1);
+    gameUsers = await game.getGameUsers2(gameID);
+
     response.render("lobby", {
       style: 'lobbyStyle',
       players: gameUsers,
@@ -48,7 +48,6 @@ router.get("/:id", async (request, response) => {
       gameId: gameID
     })
   }else{
-    console.log("Rendering screen \n\n\n");
     response.render("lobby", {
       style: 'lobbyStyle',
       players: gameUsers,
@@ -56,51 +55,13 @@ router.get("/:id", async (request, response) => {
       gameId: gameID
     })
   }
-  // console.log("gameData", gameData);
-  // console.log("gameUsers", gameUsers);
-  // Game.getGameById(gameID)
-  //   .then((results) => {
-  //     game = results;
-  //     let inLobby = game.in_lobby;
-  //     if (inLobby == true) {
-  //     Game.getGameUsers2(gameID)
-  //         .then((results) => {
-  //           gameUsers = results;
-  //           for (i = 0; i < gameUsers.length; i++) {
-  //             if (gameUsers[i].user_id == userID) {
-  //               console.log("redirecting to browselobby b/c gametiles")
-  //               // response.redirect('/browseLobby');
-  //               // return;
-  //             }
-  //           }
-  //           for (i = 0; i < gameUsers.length; i++) {
-  //             highestOrder = Math.max(highestOrder, gameUsers[i].order);
-  //           }
-  //           Game.joinGame(gameID, userID)
-  //             .then(() => {
-  //               Game.updateGameUserOrder(gameID, userID, highestOrder + 1)
-  //                 .then(() => {
-  //                   Game.getGameUsers2(gameID)
-  //                     .then((gameUsers) => {
-  //                       response.render('lobby', {
-  //                         style: 'lobbyStyle',
-  //                         players: gameUsers,
-  //                         currUser: userID,
-  //                         gameId: gameID
-  //                       })
-  //                     })
-  //                 })
-  //             })
-  //         })
-  //     }
-  //   })
 })
 
 router.get("/leave/:id", (request, response) => {
   if (request.session) {
     let userId = request.session.user_id;
     let gameId = request.params.id;
-    Game.removeFromLobby(gameId, userId)
+    game.removeFromLobby(gameId, userId)
       .then(() => {
         response.redirect("/browseLobby");
       })
@@ -109,5 +70,27 @@ router.get("/leave/:id", (request, response) => {
   }
 })
 
+router.use("/startGame/:id", async (request, response) => {
+  let GameUsers = await game.getGameUsers2(request.body.Id);
+  let allReady = false;
+  // for(user in gameUsers){
+  //   if(user.is_ready == true){
+  //     allReady = true;
+  //   }else{
+  //     allReady = false;
+  //     break;
+  //   }
+  // }
+  await game.startGame(request.params.id);
+  response.redirect(`/game/${request.params.id}`);
+});
+
+router.use("/ready/:id", async (request, response) => {
+  response.send();
+})
+
+router.use("/unready/:id", async (request, response) => {
+  response.send();
+})
 module.exports = router;
 

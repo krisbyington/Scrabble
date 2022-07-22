@@ -93,7 +93,7 @@ const getGameUsers = (game_id) => {
     return Promise.resolve(err);
   })
 }
-
+//need to trace this function and change it name to getGameAndGameUsers
 const getGameUsers2 = async (game_id) => {
   return db.any('SELECT * FROM game_users INNER JOIN users ON users.id = game_users.user_id WHERE game_id =$1', [game_id])
   .then(results => {
@@ -111,17 +111,25 @@ const removeFromLobby = (game_id, user_id) => {
     return Promise.resolve(results);
   })
   .catch((err) => {
-    console.log("ERROR in getGameUsers IN DB/GAMES.JS");
+    console.log("ERROR in removeFromLobby IN DB/GAMES.JS");
     return Promise.reject(err);
   })
 }
 
 const getGameById = (game_id) => {
   return db.one('SELECT * FROM games WHERE id=$1', [game_id])
+  .catch((err) => {
+    console.log("ERROR in getGameById IN DB/GAMES.JS");
+    return Promise.reject(err);
+  })
 }
 
 const getAllGameInfo = () => {
   return db.any('SELECT * FROM games INNER JOIN game_users ON games.id = game_users.game_id INNER JOIN users ON game_users.user_id = users.id')
+  .catch((err) => {
+    console.log("ERROR in getAllGameInfo IN DB/GAMES.JS");
+    return Promise.reject(err);
+  })
 }
 
 const getGameState = (gameId) => {
@@ -200,6 +208,24 @@ const getUserNameFromId = (userId) => {
   return db.one("SELECT username FROM users WHERE id=?", [userId])
   .then(result => {
     return Promise.resolve(result); 
+  }).catch(err => {
+    console.log("ERROR IN getUserNameFromId in db/game.js");
+    return Promise.resolve(err);
+  })
+}
+
+const startGame = (game_id) => {
+ // `UPDATE game_tiles SET , in_play=true, in_bag=false WHERE game_id=$4 
+ console.log("in db/startgame", game_id)
+ return db.any(`UPDATE games SET in_lobby=false WHERE id=$1`, [game_id] )
+  .then(result => {
+    return Promise.resolve(result);
+  })
+  .then((result) => {
+    return Promise.resolve(result);
+  }).catch(err => {
+    console.log("ERROR IN startGame in db/game.js");
+    return Promise.resolve(err);
   })
 }
 
@@ -225,4 +251,5 @@ module.exports = {
   incrementGameTurn,
   getGameTurn,
   getUserNameFromId,
+  startGame,
 };

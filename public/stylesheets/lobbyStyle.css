@@ -21,15 +21,6 @@ body {
     margin: 0;
 }
 
-.lobby-title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    font-family: Arial, sans-serif;
-    color: black;
-}
-
 .lobby-window {
     justify-content: space-evenly;
     display: flex;
@@ -41,6 +32,16 @@ body {
     border-radius: 5px;
     border: 1px solid red;
 }
+
+.lobby-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+
 
 .inner-lobby {
     justify-content: center;
