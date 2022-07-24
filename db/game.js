@@ -205,7 +205,7 @@ const incrementGameTurn = (gameId) => {
 }
 
 const getUserNameFromId = (userId) => {
-  return db.one("SELECT username FROM users WHERE id=?", [userId])
+  return db.one("SELECT username FROM users WHERE id=$1", [userId])
   .then(result => {
     return Promise.resolve(result); 
   }).catch(err => {
@@ -215,20 +215,37 @@ const getUserNameFromId = (userId) => {
 }
 
 const startGame = (game_id) => {
- // `UPDATE game_tiles SET , in_play=true, in_bag=false WHERE game_id=$4 
- console.log("in db/startgame", game_id)
  return db.any(`UPDATE games SET in_lobby=false WHERE id=$1`, [game_id] )
   .then(result => {
     return Promise.resolve(result);
   })
-  .then((result) => {
-    return Promise.resolve(result);
-  }).catch(err => {
+  .catch(err => {
     console.log("ERROR IN startGame in db/game.js");
     return Promise.resolve(err);
   })
 }
 
+const makeReady = (game_id, user_id) => {
+  return db.any(`UPDATE game_users SET is_ready=true WHERE game_id=$1 AND user_id=$2 RETURNING is_ready AS is_ready`, [game_id, user_id] )
+  .then(is_ready => {
+    return Promise.resolve(is_ready);
+  })
+  .catch(err => {
+    console.log("ERROR IN makeReady in db/game.js");
+    return Promise.resolve(err);
+  });
+}
+
+const makeUnready = (game_id, user_id) => {
+  return db.any(`UPDATE game_users SET is_ready=false WHERE game_id=$1 AND user_id=$2 RETURNING is_ready AS is_ready`, [game_id, user_id] )
+  .then(is_ready => {
+    return Promise.resolve(is_ready);
+  })
+  .catch(err => {
+    console.log("ERROR IN makeReady in db/game.js");
+    return Promise.resolve(err);
+  });
+}
 
 module.exports = {
   getEmptyGrid,
@@ -252,4 +269,6 @@ module.exports = {
   getGameTurn,
   getUserNameFromId,
   startGame,
+  makeReady,
+  makeUnready,
 };

@@ -7,34 +7,36 @@
           <p class="player-text">Username</p>
         </div>
         <div class="player-section">
-          <p class="player-text">Ready</p>
+          <p class="player-text">Unready</p>
         </div>
       </div>
+    <div class="player-list" id="player-list">
       {{#each players}}
-      <div class="player">
-        <div class="player-section">
-          <p class="player-text">{{username}}</p>
-        </div>
-        <div class="player-section">
-          <p class="player-text">Not Ready</p>
+        <div class="player">
+          <div class="player-section">
+            <p class="player-text" id="{{username}}">{{username}}</p>
+          </div>
+          <div class="player-section">
+            <p class="ready-text">Not Ready</p>
+          </div>
         </div>
       {{/each}}
     </div>
   </div>
   <div class="lobby-button-container">
-    <form class="lobby-form" action="/lobby/startGame/{{gameId}}" >
-      <button class="lobby-button" type="submit">Start Game</button>
-    </form>
-    <form class="lobby-form" action="/lobby/ready/{{gameId}}">
-      <button class="lobby-button"> Ready</button>
-    </form>
-    <form class="lobby-form" action="/lobby/unready/{{gameId}}">
-      <button class="lobby-button" type="submit">UnReady</button>
-    </form>
-    <form class="lobby-form" action="/lobby/leave/{{gameId}}">
+    <div class="lobby-outer-button"  >
+      <button class="lobby-button" onclick="startGame({{gameId}})">Start Game</button>
+    </div>
+    <div class="lobby-outer-button" onclick="makeReady({{gameId}})">
+      <button class="lobby-button">Ready</button>
+    </div>
+    <div class="lobby-outer-button">
+      <button class="lobby-button" onclick="makeUnready({{gameId}})">Not Ready</button>
+    </div>
+    <form class="lobby-outer-button" action="/lobby/leave/{{gameId}}">
       <button class="lobby-button" type="submit">Leave</button>
     </form>
-    <form class="lobby-form" method="POST" action="/users/logout">
-      <button class="lobby-button" type="submit">Sign Out</button>
+    <form class="lobby-outer-button" method="POST" action="/users/logout">
+      <button class="lobby-button" type="submit">Log Out</button>
     </form>
 </div>

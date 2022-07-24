@@ -808,6 +808,10 @@ grid-gap: 1px;
   color: black; 
 }
 
+.ready-text {
+  color: black; 
+}
+
 .lobby-button-container{
   display:flex;
   flex-direction: row;
@@ -815,6 +819,7 @@ grid-gap: 1px;
   justify-self: center;
   align-content: space-around;
   justify-content: space-around ;
+  margin-top:0.25%;
   width:75%;
   height: 10vh;
   background-color:rgb(230, 230, 230);
@@ -822,7 +827,7 @@ grid-gap: 1px;
   border-radius: 5px;
 }
 
-.lobby-form {
+.lobby-outer-button {
   display:flex;
   margin:auto;
   padding:auto;
