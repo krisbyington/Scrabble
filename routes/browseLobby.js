@@ -31,7 +31,7 @@ router.get("/", async (request, response) => {
     });
 });
 
-router.get("/updateLobbies", async (request , response) =>{
+router.get("/refresh", async (request , response) =>{
     let allGameData =  await Game.getAllGameInfo();
     let games = await Game.getGames();
     let clientData = [];
@@ -48,7 +48,9 @@ router.get("/updateLobbies", async (request , response) =>{
             players: playerList
         });
     }
+    request.app.get("io").emit("refreshBrowseLobby",{clientData});
 })
+
 // router.get("/leave/:id", (request, response) => {
 //     if (request.session) {
 //         let userId = request.session.user_id;

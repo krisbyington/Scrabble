@@ -1,14 +1,9 @@
 const { Socket } = require("socket.io");
 
 searchResults = document.getElementById("lobby-search");
-console.log(searchResults);
-
-//socket.on(refreshSearch) { 
-    //find what room this is in and what the rooms are 
-    //use the create result function to append this to the bottom of the 
-    //list 
-    //and find out which games are no longer in lobby and remove them as children 
-//}
+// console.log(searchResults);
+console.log("about fetch");
+fetch("browseLobby/refresh");
 
 const createResult = (lobbyId) => {
     let lobby = document.createElement("div");
@@ -37,7 +32,18 @@ const createResult = (lobbyId) => {
     searchResults.appendChild(lobby);
 }
 
+socket.on( "refreshBrowseLobby" , (data) => {
+    console.log("made it")
+    console.log(data);
 
+});
+
+window.onload = (event) => {
+    console.log("onloadevernt")
+    fetch("browseLobby/refresh", {
+        method:"get",
+    });
+  }
 /* <div class="lobby-search">
 {{#each lobbies}}
 <div class="lobby" id="lobby-{{id}}">
