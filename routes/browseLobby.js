@@ -30,7 +30,6 @@ router.get("/", async (request, response) => {
 });
 
 router.get("/refresh", async (request , response) =>{
-    console.log("in refresh")
     let allGameData =  await Game.getAllGameInfo();
     let games = await Game.getGames();
     let clientData = [];
