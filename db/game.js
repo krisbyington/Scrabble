@@ -215,7 +215,6 @@ const getUserNameFromId = (userId) => {
 }
 
 const startGame = (game_id) => {
- // `UPDATE game_tiles SET , in_play=true, in_bag=false WHERE game_id=$4 
  return db.any(`UPDATE games SET in_lobby=false WHERE id=$1`, [game_id] )
   .then(result => {
     return Promise.resolve(result);
