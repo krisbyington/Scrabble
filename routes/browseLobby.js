@@ -1,4 +1,3 @@
-const e = require("express");
 const express = require("express");
 const router = express.Router();
 const db = require('../db');
@@ -47,20 +46,6 @@ router.get("/refresh", async (request , response) =>{
         });
     }
     response.set("Content-Type", "application/json").send({clientData});
-})
-
-// router.get("/leave/:id", (request, response) => {
-//     if (request.session) {
-//         let userId = request.session.user_id;
-//         let gameId = request.params.id;
-//         Game.removeFromLobby(gameId, userId)
-//             .then(() => {
-//                 response.redirect("/browseLobby");
-//             })
-//     } else {
-//         console.log("NO SESSION");
-//     }
-//     Game.removeFromLobby(request.session.id)
-// })
+});
 
 module.exports = router;

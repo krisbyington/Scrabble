@@ -1,6 +1,3 @@
-
-//action="/lobby/startGame/{{gameId}}"
-
 const startGame = async (gameId) => {
     fetch(`/lobby/startGame/${gameId}`, {
         method:"get",
@@ -108,4 +105,4 @@ socket.on("playerLeft", (username) => {
             break;
         }
     }
-})
+});
