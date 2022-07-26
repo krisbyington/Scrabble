@@ -87,6 +87,7 @@ router.get("/:id", async (request, response) => {
                       playerHand = playerTiles;
                     }).then(() => {
                       response.render("game", {
+                        game: true,
                         style: "gameStyle",
                         boardSquares: cells,
                         tiles: playerHand,
@@ -117,8 +118,10 @@ router.use("/:id/updateBoard", async (request, response) => {
           boardTileData: tile_data_for_HTML
         })
       }).catch(err => {
-        console.log("ERROR", err)
+        console.log("ERROR", err);
+        return response.sendStatus(500);
       })
+  return response.sendStatus(200);
 });
 
 router.get("/:id/join", (request, response) => {
