@@ -12,8 +12,8 @@
 <body>
   {{{body}}}
 </body>
-{{!-- client socket script --}}
 <script 
+{{!-- client socket script --}}
   src="/socket.io/socket.io.js">
 </script>
 <script>
@@ -21,11 +21,16 @@
   const socket = io();
 </script>
 {{!-- INCLUDE SCRIPTS WHERE WE NEED CLIENT SOCKETS! --}}
-<script src="/javascript/frontend.js"></script>
-<script src="/javascript/chat.js"></script>
-<script src="/javascript/test.js"></script>
-<script src="/javascript/lobby.js"></script>
-<script src="/javascript/browseLobby.js"></script>
-<script src="/javascript/scoreboard.js"></script>
-
+{{#if game}}
+  <script src="/javascript/frontend.js"></script>
+  <script src="/javascript/chat.js"></script>
+  <script src="/javascript/scoreboard.js"></script>
+{{/if}}
+{{#if lobby}}
+  <script src="/javascript/lobby.js"></script>
+{{/if}}
+{{#if browseLobby}}
+  <script src="/javascript/browseLobby.js"></script>
+{{/if}}
+{{!-- <script src="/javascript/test.js"></script> --}}
 </html>
