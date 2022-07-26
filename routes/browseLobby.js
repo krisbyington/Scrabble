@@ -15,23 +15,22 @@ router.get("/", async (request, response) => {
                 playerList.push(data.username);
             }
         }
-        clientData.push({
-            id: game.id,
-            in_lobby: game.in_lobby,
-            players: playerList
-        });
+        if(game.in_lobby){
+            clientData.push({
+                id: game.id,
+                players: playerList
+            });
+        }
     }
-    // console.log('clientdata', clientData)
-    // console.log("routes/browselobby", games[0]);
-    // console.log("routes/browselobby", allGameData[0]);
-
     response.render('browseLobby', {
-        style: 'style',
+        browseLobby: true,
+        style: 'browseLobbyStyle',
         lobbies: clientData
     });
 });
 
 router.get("/refresh", async (request , response) =>{
+    console.log("in refresh")
     let allGameData =  await Game.getAllGameInfo();
     let games = await Game.getGames();
     let clientData = [];
@@ -48,7 +47,7 @@ router.get("/refresh", async (request , response) =>{
             players: playerList
         });
     }
-    request.app.get("io").emit("refreshBrowseLobby",{clientData});
+    response.set("Content-Type", "application/json").send({clientData});
 })
 
 // router.get("/leave/:id", (request, response) => {

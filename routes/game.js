@@ -87,6 +87,7 @@ router.get("/:id", async (request, response) => {
                       playerHand = playerTiles;
                     }).then(() => {
                       response.render("game", {
+                        game: true,
                         style: "gameStyle",
                         boardSquares: cells,
                         tiles: playerHand,

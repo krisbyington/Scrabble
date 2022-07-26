@@ -43,6 +43,7 @@ router.get("/:id", async (request, response) => {
     gameUsers = await game.getGameUsers2(gameID);
     request.app.get("io").sockets.to("lobby" + gameID).emit("playerJoined", {username});
     response.render("lobby", {
+      lobby: true,
       style: 'lobbyStyle',
       players: gameUsers,
       currUser: userID,
@@ -51,6 +52,7 @@ router.get("/:id", async (request, response) => {
   }else{
     request.app.get("io").sockets.to("lobby" + gameID).emit("playerJoined", {username});
     response.render("lobby", {
+      lobby: true,
       style: 'lobbyStyle',
       players: gameUsers,
       currUser: userID,

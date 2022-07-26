@@ -1,30 +1,34 @@
 <div class="page-container">
-    <div class="options-container">
+    <div class="create-container">
         <form action="/game/create">
             <button type="submit" class="button">Create Lobby</button>
         </form>
     </div>
     <div class="lobby-search-header">
-        <div class="lobby-section">Lobby ID</div>
-        <div class="lobby-section">In Lobby</div>
+        <div class="id-section">Lobby ID</div>
+        <div class="list-section">Host</div>
         <div class="button-section"></div>
     </div>
     <div class="lobby-search" id="lobby-search">
         {{#each lobbies}}
-            {{#if in_lobby}}
                 <div class="lobby" id="lobby-{{id}}">
-                    <div class="lobby-section">
+                    <div class="id-section">
                         {{id}}
                     </div>
-                    <div class="lobby-section">
-                        {{in_lobby}}
+                    <div class="host-section">
+                    {{#each players}}
+                        <p class="host">
+                        {{this}}
+                        </p>
+                    {{/each}}
                     </div>
-                    <a href="lobby/{{id}}">
-                        {{!-- can add an input="submit" to get rid of the a tag  --}}
-                        <button  class="button-section" >Join</button>
-                    </a>
+                    <div class="button-section">
+                        <a href="lobby/{{id}}">
+                            {{!-- can add an input="submit" to get rid of the a tag  --}}
+                            <button class="join-button">Join</button>
+                        </a>
+                    </div>
                 </div>
-            {{/if}}
         {{/each}}
     </div>
 </div>
