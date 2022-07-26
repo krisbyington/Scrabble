@@ -1,7 +1,6 @@
 <h1 class="lobby-title">Game Lobby</h1>
 
   <div class="lobby-window">
-    <div class="lobby-info">
       <div class="lobby-header">
         <div class="player-section">
           <p class="player-text">Username</p>
@@ -10,26 +9,29 @@
           <p class="player-text">Unready</p>
         </div>
       </div>
+    <div class="lobby-info">
+    <div class="player-list" id="player-list">
       {{#each players}}
-      <div class="player">
-        <div class="player-section">
-          <p class="player-text" id="{{username}}">{{username}}</p>
-        </div>
-        <div class="player-section">
-          <p class="ready-text">Not Ready</p>
+        <div class="player">
+          <div class="player-section">
+            <p class="player-text" id="{{username}}">{{username}}</p>
+          </div>
+          <div class="player-section">
+            <p class="ready-text">Not Ready</p>
+          </div>
         </div>
       {{/each}}
     </div>
   </div>
   <div class="lobby-button-container">
-    <form class="lobby-outer-button" action="/lobby/startGame/{{gameId}}" >
-      <button class="lobby-button" type="submit">Start Game</button>
-    </form>
-    <div class="lobby-outer-button" onclick="makeReady()">
+    <div class="lobby-outer-button"  >
+      <button class="lobby-button" onclick="startGame({{gameId}})">Start Game</button>
+    </div>
+    <div class="lobby-outer-button" onclick="makeReady({{gameId}})">
       <button class="lobby-button">Ready</button>
     </div>
     <div class="lobby-outer-button">
-      <button class="lobby-button" onclick="makeUnready()">UnReady</button>
+      <button class="lobby-button" onclick="makeUnready({{gameId}})">Not Ready</button>
     </div>
     <form class="lobby-outer-button" action="/lobby/leave/{{gameId}}">
       <button class="lobby-button" type="submit">Leave</button>
