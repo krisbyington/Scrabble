@@ -13,8 +13,8 @@ module.exports = {
     use_env_variable: "DATABASE_URL",
     dialect: "postgres",
     dialectOptions: {
-      ssl: false
-    }
+    ssl: true
+  }
   },
 };
 // var sequelize = new Sequelize(process.env.DATABASE_URL, {
