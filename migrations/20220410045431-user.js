@@ -16,22 +16,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      total_games: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
-      wins: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
-      win_streak: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
-      high_score: {
-        type: Sequelize.INTEGER,
-        defaultValue: 0,
-      },
     });
   },
   down: (queryInterface, Sequelize) => {
