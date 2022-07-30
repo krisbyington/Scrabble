@@ -14,11 +14,15 @@ module.exports = {
     dialect: "postgres",
    dialectOptions: {
     ssl: { rejectUnauthorized: false,
-            require:true},
+            require:true,
+            ca: process.env.SERVERCA,
+            key: process.env.CLIENTKEY,
+            cert: process.env.CLIENTCERT,
+          },
  }
   },
 };
-
+//            ca: fs.readFileSync(`${__dirname}/../postgresql/root.crt`),
 // ssl: {
 //   require: true, // This will help you. But you will see nwe error
 //   rejectUnauthorized: false // This line will fix new error

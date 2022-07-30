@@ -60,3 +60,9 @@ typings/
 # next.js build output
 .next
 ".env" 
+
+#encryption data
+.crt 
+.csr
+.key
+.srl
