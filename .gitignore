@@ -62,7 +62,7 @@ typings/
 ".env" 
 
 #encryption data
-.crt 
-.csr
-.key
-.srl
+*.crt 
+*.csr
+*.key
+*.srl
