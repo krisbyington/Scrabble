@@ -29,33 +29,36 @@ li {
 /****************************/
 /* login/register page style */
 /****************************/
+
 .auth-container{
-  display:absolute;
-  align-self:center;
+  align-self: center;
   justify-self: center;
   justify-content: center;
   background-color: rgb(225, 225, 225);
-  width:23%;
-  /* height: 90%; */
+  width: 23%;
   margin-left: 35%;
-  margin-right:40%;
-  margin-top:5%;
-  overflow:hidden;
-  text-shadow:0 0 1px darkgray;
-  border-radius:5px;
+  margin-right: 40%;
+  margin-top: 5%;
+  overflow: hidden;
+  text-shadow: 0 0 1px darkgray;
+  border-radius: 5px;
   box-shadow: 0 0 10px 2px rgba(0,0,0,0.6);
+}
+
+.hide-slider { 
+  display: none; 
 }
 
 .form-container{
   display: flex;
   flex-direction: column;
-  align-items:flex-start;
-  align-self:center;
+  align-items: flex-start;
+  align-self: center;
   justify-self: center;
   background-color: rgb(200,156,84);
-  border-radius:5px;
-  border-color:rgba(0, 0, 0, 0.3);   
-  margin:1vh;
+  border-radius: 5px;
+  border-color: rgba(0, 0, 0, 0.3);   
+  margin: 1vh;
 }
 
 
@@ -918,7 +921,7 @@ grid-gap: 1px;
   padding-right:2vh;
 }
 
-.link-container{
+#login-buttons-container{
   display: flex;
   flex-direction: column;
   align-items:center;
@@ -931,3 +934,5 @@ grid-gap: 1px;
   margin:1vh;
   padding-bottom:10px;
 }
+
+

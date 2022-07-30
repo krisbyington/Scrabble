@@ -3,19 +3,18 @@
     <div class="title-container">
       <h1>{{title}}</h1>
     </div>
-    <div class="link-container">
+    <div id="login-buttons-container">
       <br>
-      <button>
-        <a href="register">Register</a>
+      {{> registrationSlider }}
+      <button class="login-page-button">
+          Register
       </button>
       <br>
-      <button>
-        <a href="login">Login</a>
+      {{> loginSlider}}
+      <button class="login-page-button">
+        Login
       </button>
       <br>
-      <button>
-        <a href="/game/create">Create a game</a>
-      </button>
     </div>
   </div>
 </div>
