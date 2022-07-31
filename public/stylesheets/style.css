@@ -30,15 +30,18 @@ li {
 /* login/register page style */
 /****************************/
 
-.auth-container{
+.slider-container{
   align-self: center;
   justify-self: center;
   justify-content: center;
   background-color: rgb(225, 225, 225);
-  width: 23%;
-  margin-left: 35%;
+  width: 100%;
+  padding:3%;
+  padding-top:1%;
+  margin-bottom:2%;
+  /* margin-left: 35%;
   margin-right: 40%;
-  margin-top: 5%;
+  margin-top: 5%; */
   overflow: hidden;
   text-shadow: 0 0 1px darkgray;
   border-radius: 5px;
@@ -49,12 +52,13 @@ li {
   display: none; 
 }
 
-.form-container{
+.auth-container{
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   align-self: center;
   justify-self: center;
+  width:100%;
   background-color: rgb(200,156,84);
   border-radius: 5px;
   border-color: rgba(0, 0, 0, 0.3);   
@@ -62,13 +66,13 @@ li {
 }
 
 
-.form-field{
+.input-field{
   display:flex;
   flex-direction:row;
   justify-content: space-around;
 }
 
-.form-name{   
+.input-name{   
    width: 30%;
    min-width: 100px;
 }
@@ -921,14 +925,14 @@ grid-gap: 1px;
   padding-right:2vh;
 }
 
-#login-buttons-container{
+.login-buttons-container{
   display: flex;
   flex-direction: column;
   align-items:center;
   justify-items:center;
   align-self:center;
   justify-self: center;
-  background-color: rgb(200,156,84);
+  /* background-color: rgb(200,156,84); */
   border-radius:5px;
   border-color:rgba(0, 0, 0, 0.2);   
   margin:1vh;
