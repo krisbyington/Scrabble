@@ -1,8 +1,6 @@
 const container = document.getElementById("login-buttons-container");
 var registerDiv = container.children[0];
 const loginDiv = container.children[1];
-console.log(container.children[0])
-console.log(container.children)
 const registerButton = container.children[0].children[0];
 const loginButton = container.children[1].children[0];
 
@@ -24,6 +22,7 @@ tempLabel.className = "input-name";
 tempLabel.innerText = "Username";
 let tempInput = document.createElement("input");
 tempInput.className = "form-input";
+tempInput.id = "registration-username";
 tempInput.name = "register-username";
 tempInput.type = "text";
 tempDiv.append(tempLabel);
@@ -37,8 +36,9 @@ tempLabel.className = "input-name";
 tempLabel.innerText = "Password";
 tempInput = document.createElement("input");
 tempInput.className = "form-input";
+tempInput.id = "registration-password";
 tempInput.name = "register-password";
-tempInput.type = "text";
+tempInput.type = "password";
 tempDiv.append(tempLabel);
 tempDiv.append(tempInput);
 registrationSlider.append(tempDiv);
@@ -49,9 +49,10 @@ tempLabel = document.createElement("label");
 tempLabel.className = "input-name";
 tempLabel.innerText = "Confirm Password";
 tempInput = document.createElement("input");
+tempInput.id = "registration-confirm-password";
 tempInput.className = "form-input";
 tempInput.name = "register-confirm-password";
-tempInput.type = "text";
+tempInput.type = "password";
 tempDiv.append(tempLabel);
 tempDiv.append(tempInput);
 registrationSlider.append(tempDiv);
@@ -71,6 +72,7 @@ tempLabel.className = "input-name";
 tempLabel.innerText = "Username";
 tempInput = document.createElement("input");
 tempInput.className = "form-input";
+tempInput.id = "login-username";
 tempInput.name = "login-username";
 tempInput.type = "text";
 tempDiv.append(tempLabel);
@@ -83,9 +85,10 @@ tempLabel = document.createElement("label");
 tempLabel.className = "input-name";
 tempLabel.innerText = "Password";
 tempInput = document.createElement("input");
+tempInput.id = "login-password";
 tempInput.className = "form-input";
 tempInput.name = "login-password";
-tempInput.type = "text";
+tempInput.type = "password";
 tempDiv.append(tempLabel);
 tempDiv.append(tempInput);
 loginSlider.append(tempDiv);
@@ -94,30 +97,94 @@ loginSlider.append(tempDiv);
 
 const openRegistration = async () => {
     if(registerButtonPressed){
-        //this is where the fetch will be send 
-        //we if empty then close like below 
-        //if what is entered is incorrect 
-        //then we clear the fields
-        //then break without changing buttonpress 
-        registerButtonPressed = false;
-        registrationSlider.remove();
-       
+        username = document.getElementById("registration-username");
+        password = document.getElementById("registration-password");
+        confirmPassword = document.getElementById("registration-confirm-password");
+        username.classList.remove("form-empty");
+        password.classList.remove("form-empty");
+        confirmPassword.classList.remove("form-empty");
+        if( (!username.value) && (password.value || confirmPassword.value)){
+            username.classList.add("form-empty");
+        }
+        if( (!password.value) && (username.value || confirmPassword.value)){
+            password.classList.add("form-empty");
+        } 
+        if( (!confirmPassword.value) && (username.value || password.value)){
+            confirmPassword.classList.add("form-empty");
+        }
+        if( !(username.value || password.value || confirmPassword.value) ){
+            registerButtonPressed = false;
+            registrationSlider.remove();
+        }
+        if(username.value && password.value && confirmPassword.value){
+            if(password.value == confirmPassword.value){
+                let registerResult = await fetch("/users/register", {
+                    body: JSON.stringify([username.value, password.value, confirmPassword.value]),
+                    method: "post",
+                    headers: { "Content-Type": "application/json" },
+                }).then( (response) => {
+                    return response.text();
+                });
+                if(registerResult == "success"){
+                    let loginResult = await fetch("/users/login", {
+                        body: JSON.stringify([username.value, password.value]),
+                        method: "post",
+                        headers: { "Content-Type": "application/json" },
+                    }).then( (response) => {
+                        return response.text();
+                    });
+                    if(loginResult == "success"){
+                        window.location.href = `${window.location}browseLobby`
+                    }                    
+                    
+                }
+                if(registerResult == "user-exists"){
+                    username.classList.add("form-empty");
+                    alert("Username Taken");
+                    location.reload();
+                }
+            }
+
+        }
     }else{
         registerButtonPressed = true;
-        registerDiv.prepend(registrationSlider)
-        
+        registerDiv.prepend(registrationSlider);
     }
 }
 
 const openLogin = async () => { 
     if(loginButtonPressed){
-         //this is where the fetch will be send 
-        //we if empty then close like below 
-        //if what is entered is incorrect 
-        //then we clear the fields
-        //then break without changing buttonpress 
-        loginButtonPressed = false;
-        loginSlider.remove();
+        username = document.getElementById("login-username");
+        password = document.getElementById("login-password");
+        console.log(username);
+        console.log(username.value);
+        username.classList.remove("form-empty");
+        password.classList.remove("form-empty");
+        if( !username.value && password.value){
+            username.classList.add("form-empty");
+        }
+        if( !password.value && username.value){
+            password.classList.add("form-empty");
+        } 
+        if( !username.value && !password.value){
+            loginButtonPressed = false;
+            loginSlider.remove();
+        }
+        if( username.value && password.value){
+            let loginResult = await fetch("/users/login", {
+                body: JSON.stringify([username.value, password.value]),
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+            }).then( (response) => {
+                return response.text();
+            });
+            if(loginResult == "success"){
+                window.location.href = `${window.location}browseLobby`
+            }else{
+                alert("incorrect credentials");
+                location.reload();
+            }
+        }
         
     }else{
         loginButtonPressed = true;

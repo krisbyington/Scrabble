@@ -9,32 +9,44 @@ const { emptyQuery } = require('pg-protocol/dist/messages');
 
 
 router.post("/register", async (req, res, next) => {
-  let username = req.body.username;
-  let password = req.body.password;
-  let confirmpassword = req.body['confirm-password'];
-
-  UserModel.usernameExists(username)
+  console.log(req.body[0]);
+  console.log(req.body[1]);
+  console.log(req.body[2]);
+  let username = req.body[0];
+  let password = req.body[1];
+  let confirmPassword = req.body[2];
+  
+  if(password == confirmPassword){
+    UserModel.usernameExists(username)
     .then((userDoesExist) => {
       if (userDoesExist) {
+        res.set("content-type","text/plain").send("user-exists")
         console.log("USER ALREADY EXISTS");
       } else {
         return UserModel.create(username, password);
       }
     })
     .then((createUserId) => {
-      res.redirect('/login')
+      res.set("content-type","text/plain").send("success");
     })
     .catch(err => {
       console.log(err);
     });
+  }else{
+    res.set("content-type","text/plain").send("fail");
+  }
 });
 
 router.post("/login", async (req, res, next) => {
-  let username = req.body.username;
-  let password = req.body.password;
+  console.log("in login")
+  let username = req.body[0];
+  let password = req.body[1];
+  console.log(username);
+  console.log(password)
 
   let userId = -1
   if (req.session.user_id) {
+    //no idea what this does
     res.redirect("/lobby")
   } else {
     UserModel.authenticate(username, password)
@@ -48,12 +60,13 @@ router.post("/login", async (req, res, next) => {
             .then((result) => {
               if (result) {
                 req.session.user_id = userId
-                res.redirect("/browseLobby")
+                res.set("content-type","text/plain").send("success");
               } else {
-                res.redirect("/register")
+                res.set("content-type","text/plain").send("fail");
               }
             })
         } else {
+          res.set("content-type","text/plain").send("incorrect credentials");
           console.log("user id was not valid.")
         }
       }))

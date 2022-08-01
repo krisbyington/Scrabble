@@ -39,9 +39,6 @@ li {
   padding:3%;
   padding-top:1%;
   margin-bottom:2%;
-  /* margin-left: 35%;
-  margin-right: 40%;
-  margin-top: 5%; */
   overflow: hidden;
   text-shadow: 0 0 1px darkgray;
   border-radius: 5px;
@@ -80,6 +77,10 @@ li {
 .form-input{
   width: 70%;
   min-width: 100px;
+}
+
+.form-empty{
+  border-color:red;
 }
 
 .button-container{

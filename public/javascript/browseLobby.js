@@ -19,8 +19,6 @@ const createResult = (data) => {
         resultId = result.id.split("-")[1];
         for(fetchResult of data){
             if(resultId == fetchResult.id){
-                console.log(resultId)
-                console.log(fetchResult.id)
                 if(fetchResult.in_lobby){
                     continue;
                 }else{
