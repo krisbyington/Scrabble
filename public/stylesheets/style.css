@@ -104,6 +104,29 @@ li {
   border-radius:2px;
 }
 
+#loadingBar {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  width:15vw;
+  height:1vh;
+  background-color: gray;
+}
+
+.loadSection {
+  display:flex;
+  border-color:black;
+  width:5vw;
+  height:1vh;
+  background-color:gray;
+}
+
+.on{
+  background-color:burlywood;
+}
+
+
 /****************************/
 /* browseLobby page style  */
 /****************************/
