@@ -10,6 +10,8 @@ module.exports = {
     dialect: "postgres",
   },
   production: {
+    //this was put in place for heroku so we might have to change it 
+    //we will need to grab the credentials from namecheap 
     use_env_variable: "DATABASE_URL",
     dialect: "postgres",
    dialectOptions: {
