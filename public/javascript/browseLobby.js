@@ -76,4 +76,4 @@ const createResult = (data) => {
     }
 }
 
-setInterval(refresh, 1000);
+setInterval(refresh, 500);
