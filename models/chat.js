@@ -1,3 +1,5 @@
+//This requires clean up
+
 const { bindComplete } = require("pg-protocol/dist/messages");
 const game = require("../db/game");
 const db = require('../db');

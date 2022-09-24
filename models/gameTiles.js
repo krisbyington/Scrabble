@@ -139,7 +139,7 @@ const getWordWorth = (word) => {
     }
     return Promise.all(letters).then(results => {
         worth = 0;
-        console.log("results", results);
+        console.log("getWordWorth.results ->", results);
         for (let point of results) {
             worth += point;
         }
@@ -547,7 +547,7 @@ const getTileDataForHTML = async (gameId) => {
                 return Promise.resolve(tileObjectList);
             })
         }).catch(err => {
-            console.log(err); 
+            console.log("get tiledata for html err -> " ,err); 
         })
 })
 }

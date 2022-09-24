@@ -41,7 +41,7 @@ UserModel.usernameExists = (username) =>
     return db.any(baseSQL, [username])
     .then( ([results, fields]) =>
     {
-        console.log(results);
+        console.log("UserModel.authenticate -> ", results);
         if (results)
         {
             userId = results.id;

@@ -42,7 +42,7 @@ router.post("/login", async (req, res, next) => {
   let username = req.body[0];
   let password = req.body[1];
   console.log(username);
-  console.log(password)
+
 
   let userId = -1
   if (req.session.user_id) {

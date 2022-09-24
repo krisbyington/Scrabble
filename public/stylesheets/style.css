@@ -79,7 +79,7 @@ li {
   min-width: 100px;
 }
 
-.form-empty{
+.form-incorrect{
   border-color:red;
 }
 

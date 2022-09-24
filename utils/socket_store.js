@@ -7,7 +7,7 @@ function addSocket(uid, socket) {
 
 function removeSocket(uid) {
 	delete socketMap[uid];
-	console.log(socketMap);
+	console.log("socketMap -> " ,socketMap);
 }
 
 

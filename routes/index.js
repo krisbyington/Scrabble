@@ -8,9 +8,9 @@ router.get('/', function (req, res, next) {
   req.app.get("io").emit('testEVENT')
 
   res.render('index', { 
-    title: 'Kris\'s Skrabble Game',
-    landing: true,
-    style: 'landingStyle' });
+    title: 'Kris\'s Skrabble Clone',
+    index: true,
+    style: 'indexStyle' });
   if (req.session.user_id) {
     res.redirect("/browseLobby")
   } 
