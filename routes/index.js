@@ -8,7 +8,7 @@ router.get('/', function (req, res, next) {
   req.app.get("io").emit('testEVENT')
 
   res.render('index', { 
-    title: 'Kris\'s Skrabble Clone',
+    title: 'Kris\'s Skrabble Klone',
     index: true,
     style: 'indexStyle' });
   if (req.session.user_id) {
