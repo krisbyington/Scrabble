@@ -1,25 +1,20 @@
 var express = require('express');
-const { isWordValid } = require('../models/gameBoard');//why is this here 
 var router = express.Router();
 const db = require("../db/index");
 
 /* LANDING PAGE . */
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
   req.app.get("io").emit('testEVENT')
-
-  if (req.session.user_id) {
-    res.redirect("/browseLobby")
-  } 
   
+  if (req.session.user_id) {
+    res.redirect("/browseLobby");
+  } 
+
   res.render('index', { 
     title: 'Kris\'s Skrabble Klone',
     index: true,
     style: 'indexStyle' });
 
-});
-
-router.get("/register", (request, response) => {
-  response.render('register');
 });
 
 router.get("/game", (request, response) => {
