@@ -7,22 +7,19 @@ const db = require("../db/index");
 router.get('/', function (req, res, next) {
   req.app.get("io").emit('testEVENT')
 
+  if (req.session.user_id) {
+    res.redirect("/browseLobby")
+  } 
+  
   res.render('index', { 
     title: 'Kris\'s Skrabble Klone',
     index: true,
     style: 'indexStyle' });
-  if (req.session.user_id) {
-    res.redirect("/browseLobby")
-  } 
 
 });
 
 router.get("/register", (request, response) => {
   response.render('register');
-});
-
-router.get("/login", (request, response) => {
-  response.render('login');
 });
 
 router.get("/game", (request, response) => {
