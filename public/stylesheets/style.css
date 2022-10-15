@@ -259,10 +259,12 @@ li {
 .chat-messages-game {
   grid-area:chat;
   display:flex;
-  flex-direction: column;
-  width:23vw;
-  height: 90vh;
-  transform:translate(0%, 5%);
+  flex-direction:column;
+  /* width:23vw;
+  height: 90vh; */
+  width:90%;
+  height:100%;
+  margin-top:5%; 
   background-color:rgb(149, 146, 146);
   border-radius: 5px;
 }
@@ -461,22 +463,27 @@ grid-gap: 1px;
   display: grid;
   width: 100%;
   height:100%;
+  gap:1vh;
   grid-template-areas:
-  "board board board board chat" 
-  "board board board board chat"
-  "board board board board chat"
-  "board board board board chat"
-  "tiles tiles tiles tiles chat"
+  "board board board board board board board chat" 
+  "board board board board board board board chat"
+  "board board board board board board board chat"
+  "board board board board board board board chat"
+  "board board board board board board board chat"
+  "e-but e-but tiles tiles tiles g-but g-but chat"
   ;
 } 
 
 #game-board{
   grid-area:board;
   display:grid;
-  transform:translate(0%, 5%);
+  /* transform:translate(0%, 5%); */
   grid-template-columns: repeat(15, 2.5vw);
   grid-template-rows: repeat(15, 2.5vw); 
   gap:0.25vw;
+  width:100%;
+  height:100%;
+  margin-top:2vh;
   justify-content:center;
   align-content:center;
 }
@@ -552,29 +559,36 @@ grid-gap: 1px;
 /****************************/
 
 .tile-rack-bag-wrapper{
+  /*this extra wrapper might have alot to do with the problem */
   display:flex;
   flex-direction:row;
-  width:100%;
+  /* position:relative;
+  z-index: 1; */
+ 
 }
 
 .tile-rack-wrapper{
-  transform:translate(0%, 35%);
+  grid-area:tiles;
+  /* transform:translate(-25%,20%); */
   display:flex;
+  position:relative;
   flex-direction:column;
+
 }
 
 .tile-wrapper{
-  grid-area:tiles;
   display:flex;
   align-items:center;
   justify-content:center;
-  transform:translate(30%,35%);
-  width:40vw; 
-  z-index:1; 
+  transform:translate(0%, 25%);
+  width:100%;
+  height:100%; 
+  z-index:2;
   gap:5px;
 }
 
 .tile{
+/*consider making this a little grid template area*/ 
   display:flex;
   background-color:rgb(201, 145, 57);
   width:6vh;
@@ -602,7 +616,7 @@ grid-gap: 1px;
   align-self: center;
   justify-self:center;
   background-color: black;
-  transform:translate(12vw, 1vh);
+  /* transform:translate(12vw, 1vh); */
   height: 2vh;
   width: 50vh;
   max-height: 2vh;
@@ -610,11 +624,20 @@ grid-gap: 1px;
   min-height: 2vh;
   min-width: 50vh;
   border-radius: 10px;
+  z-index:1; 
+}
+
+.game-buttons-wrapper{
+  grid-area:g-but;
+  display:flex;
+  width:100%;
+  height:100%;
+  margin-top:0%;
 }
 
 .bag-icon-wrapper{
   display:flex;
-  transform:translate(16vh, 4vh);
+  /* transform:translate(0vh, 4vh); */
   background-color:rgb(78, 78, 78);
   border:0;
 }
@@ -632,15 +655,48 @@ grid-gap: 1px;
 
 #play-word-button{
   display:flex;
-  width: 5vw;
-  height:3vh;
-  transform:translate(18vh, 8vh);
+  align-self:center;
+  justify-self:center;
+  align-content:center;
+  justify-content:center;
+  width:4.5vw;
+  height:2.5vh;
+  z-index: 2;
+  transform:translate(0%, 1vh);
 }
 
-#play-word-button > p{
+.exit-buttons-wrapper{
+  grid-area:e-but;
   display:flex;
-  align-self: center;
-  justify-self:center;
+  align-content:flex-end;
+  width:100%;
+  height:100%;
+}
+
+.game-exit-button-form{
+  display:flex;
+  align-items:center;
+  width:auto;
+  height:auto;
+  margin:auto;
+}
+
+#game-log-out-button {
+  display:flex;  
+  width:4.5vw;
+  height:2.5vh;
+  align-content:center;
+  justify-content:center;
+  transform:translate(4vw,1vh);
+}
+
+#game-leave-button{
+  display:flex;
+  align-content:center;
+  justify-content:center;
+  width:3.5vw;
+  height:2.5vh;
+  transform:translate(2vw, 1vh);
 }
 
 /****************************/
@@ -734,10 +790,12 @@ grid-gap: 1px;
   cursor: pointer;
 }
 
-#chat-text {
+#chat-text-input {
   justify-content: left;
   align-items: left;
   text-align: left;
+  border:0px;
+  width:100%;
   font-family: Arial, sans-serif;
   color: black;
   font-size: 18px;
