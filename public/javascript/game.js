@@ -6,6 +6,10 @@ const selection = [];
 const words = [];
 let word = [];
 
+function clickTest() {
+  console.log(`clicked `);
+}
+
 document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
@@ -142,7 +146,7 @@ socket.on("valid-word", async data => {
 })
 
 socket.on("load-board-data", boardTileData => {
-  console.log("loading board data on socket",boardTileData);
+  //console.log("loading board data on socket",boardTileData);
   fillBoardFromDB(boardTileData.boardTileData)
 });
 
@@ -151,21 +155,22 @@ const slotTaken = (x, y) => {
   return found !== undefined;
 };
 
-const isYourTurn = (turnValue) => {
-  if (turnValue) {
-    let bagWrapper = document.querySelector(".bag-icon-wrapper");
-    bagWrapper.ClassList.remove("bag-not-your-turn");
-    bagWrapper.ClassList.add("bag-your-turn");
-  }
-}
+// pre-mature code, needs inplementation to change color and indicate turn 
+// const isYourTurn = (turnValue) => {
+//   if (turnValue) {
+//     let bagWrapper = document.querySelector(".bag-icon-wrapper");
+//     bagWrapper.ClassList.remove("bag-not-your-turn");
+//     bagWrapper.ClassList.add("bag-your-turn");
+//   }
+// }
 
-const isNotYourTurn = (turnValue) => {
-  if (!turnValue) {
-    let bagWrapper = document.querySelector(".bag-icon-wrapper");
-    bagWrapper.ClassList.remove("bag-your-turn");
-    bagWrapper.ClassList.add("bag-not-your-turn");
-  }
-}
+// const isNotYourTurn = (turnValue) => {
+//   if (!turnValue) {
+//     let bagWrapper = document.querySelector(".bag-icon-wrapper");
+//     bagWrapper.ClassList.remove("bag-your-turn");
+//     bagWrapper.ClassList.add("bag-not-your-turn");
+//   }
+// }
 
 const replenishHand = (data) => {
   tileWrapper = document.getElementById("tile-wrapper");
@@ -228,5 +233,6 @@ window.onload = (event) => {
   const url = (event.target.URL)
   const targetIdx = url.indexOf('/game')
   const id = url.slice(targetIdx + 6);
+  //why is this data bot being used anymore? 
   updateBoard();
 }

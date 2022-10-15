@@ -1,4 +1,11 @@
-<div class="tile-rack-bag-wrapper">
+    <div class="exit-buttons-wrapper">
+        <form class="game-exit-button-form" method="POST" action="/users/logout">
+            <button id="game-log-out-button" type="submit">Log Out</button>
+        </form>
+        <form class="game-exit-button-form"action="/game/leave/{{gameId}}">
+            <button id="game-leave-button" type="submit">Leave</button>
+        </form>
+    </div>
     <div class="tile-rack-wrapper">
         <div id="tile-wrapper" data-id="{{userId}}" class="tile-wrapper">
             {{#each tiles}}
@@ -10,11 +17,12 @@
         </div>
         <div class="tile-rack"></div>
     </div>
-    <button class="bag-icon-wrapper">
-        <img id="bag-icon" src="/bag-icon.png" alt="" width="90" height="90" />
-        <p>{{tilesInBag}}</p>
-    </button>
-    <button type="submit" form="tile-form" id="play-word-button">
-        play word
-    </button>
-</div>
+    <div class="game-buttons-wrapper">
+        <button class="bag-icon-wrapper">
+            <img id="bag-icon" src="/bag-icon.png" alt="" width="90" height="90" />
+            <p>{{tilesInBag}}</p>
+        </button>
+        <button type="submit" form="tile-form" id="play-word-button">
+            play word
+        </button>
+    </div>

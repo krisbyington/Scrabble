@@ -94,6 +94,7 @@ router.get("/:id", async (request, response) => {
                         tilesInBag: gameTiles.getNumTilesInBag,
                         messages: chat.getMessages(),
                         userId: userId,
+                        gameId:gameId
                       });
                     });
                 })
@@ -436,5 +437,21 @@ async function getGameUsers(id) {
     })
   return x;
 }
+
+router.get("/leave/:id", async (request, response) => {
+  if (request.session) {
+    let userId = request.session.user_id;
+    let gameId = request.params.id;
+    username = await game.getUserNameFromId(userId);
+    request.app.get("io").sockets.to("lobby" + gameId).emit("playerLeft", {username});
+    game.removeFromLobby(gameId, userId)
+      .then(() => {
+        response.redirect("/browseLobby");
+      })
+  } else {
+    console.log("NO SESSION");
+    response.sendStatus(403);
+  }
+})
 
 module.exports = router;
