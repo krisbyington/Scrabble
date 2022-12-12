@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
   res.render('index', { 
     title: 'Kris\'s Skrabble Klone',
     index: true,
-    style: 'indexStyle' });
+   });
   if (req.session.user_id) {
     res.redirect("/browseLobby")
   } 
