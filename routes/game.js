@@ -88,13 +88,12 @@ router.get("/:id", async (request, response) => {
                     }).then(() => {
                       response.render("game", {
                         game: true,
-                        style: "gameStyle",
                         boardSquares: cells,
                         tiles: playerHand,
                         tilesInBag: gameTiles.getNumTilesInBag,
                         messages: chat.getMessages(),
                         userId: userId,
-                        gameId:gameId
+                        gameId: gameId
                       });
                     });
                 })

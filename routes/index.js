@@ -13,8 +13,7 @@ router.get('/', function (req, res) {
   res.render('index', { 
     title: 'Kris\'s Skrabble Klone',
     index: true,
-    style: 'indexStyle' });
-
+    });
 });
 
 router.get("/game", (request, response) => {
