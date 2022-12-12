@@ -8,7 +8,7 @@ router.get("/", (request, response) => {
 
   if (request.session) {
     response.render('lobby', {
-      style: 'lobbyStyle',
+      lobby: true,
     });
   } else {
     response.send("no session found :(")

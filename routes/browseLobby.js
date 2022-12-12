@@ -23,7 +23,6 @@ router.get("/", async (request, response) => {
     }
     response.render('browseLobby', {
         browseLobby: true,
-        style: 'browseLobbyStyle',
         lobbies: clientData
     });
 });
