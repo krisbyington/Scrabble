@@ -78,50 +78,10 @@ router.get("/leave/:id", async (request, response) => {
 })
 
 router.use("/startGame/:id", async (request, response) => {
-  let gameUsers = await game.getGameUsers2(request.params.id);
-  let allReady = false;
-  for(user of gameUsers){
-    if(user.is_ready == true){
-      allReady = true;
-    }else{
-      allReady = false;
-      break;
-    }
-  }
-  console.log("allReady", allReady)
-  if(allReady){
-    await game.startGame(request.params.id);
-    request.app.get("io").sockets.to("lobby" + request.params.id).emit("startGame",{route: `/game/${request.params.id}`});
-  }else{
-    return response.sendStatus(200);
-  }
+  await game.startGame(request.params.id);
+  request.app.get("io").sockets.to("lobby" + request.params.id).emit("startGame",{route: `/game/${request.params.id}`});
 });
 
-router.use("/ready/:id", async (request, response) => {
-  let userId = request.session.user_id;
-  let gameId = request.params.id
-  let result = await game.makeReady(gameId, userId);
-  let isReady = result[0].is_ready;
-  if(isReady){
-    username = await game.getUserNameFromId(userId);
-    request.app.get("io").sockets.to("lobby" + request.params.id).emit("madeReady", {username});
-    return response.sendStatus(200);
-  }
-  return response.sendStatus(500);
-});
-
-router.use("/unready/:id", async (request, response) => {
-  let userId = request.session.user_id;
-  let gameId = request.params.id
-  let result = await game.makeUnready(gameId, userId);
-  let isReady = result[0].is_ready;
-  if(!isReady){
-    username = await game.getUserNameFromId(userId);
-    request.app.get("io").sockets.to("lobby" + request.params.id).emit("madeUnready", {username});
-    return response.sendStatus(200);
-  }
-  return response.sendStatus(500);
-})
 
 module.exports = router;
 

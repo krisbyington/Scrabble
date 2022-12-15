@@ -5,21 +5,6 @@ const startGame = async (gameId) => {
     });
 }
 
-const makeReady = async (gameId) => {
-    fetch(`/lobby/ready/${gameId}`, {
-        body:JSON.stringify({"gameId":gameId}),
-        method:"post",
-        headers: { "Content-Type": "application/json" },
-    });
-}
-
-const makeUnready = (gameId) => {
-    fetch(`/lobby/unready/${gameId}`, {
-        body:JSON.stringify({"gameId":gameId}),
-        method:"post",
-        headers: { "Content-Type": "application/json" },
-    });
-}
 
 const addPlayerToLobby = (username) => {
     let playerList = document.getElementById("player-list");
@@ -50,26 +35,6 @@ const addPlayerToLobby = (username) => {
     playerList.append(container);
     
 }
-
-socket.on("madeReady", (username) => {
-    let playerName = username.username.username;
-    let players = document.getElementsByClassName("player");
-    for(player of players){
-        if(player.children[0].children[0].id == playerName){
-            player.children[1].children[0].innerText = "Ready";
-        }
-    }
-});
-
-socket.on("madeUnready", (username) => {
-    let playerName = username.username.username;
-    let players = document.getElementsByClassName("player");
-    for(player of players){
-        if(player.children[0].children[0].id == playerName){
-            player.children[1].children[0].innerText = "Not Ready";
-        }
-    }
-});
 
 socket.on("startGame", (gameRoute) => {
     console.log(gameRoute.route);

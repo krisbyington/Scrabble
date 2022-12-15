@@ -8,8 +8,8 @@
         </form>
     </div>
     <div class="lobby-search-header">
-        <div class="id-section">Lobby ID</div>
-        <div class="list-section">Host</div>
+        <div class="id-section-title">Lobby ID</div>
+        <div class="player-section">Players</div>
         <div class="button-section"></div>
     </div>
     <div class="lobby-search" id="lobby-search">
@@ -18,9 +18,9 @@
                     <div class="id-section">
                         {{id}}
                     </div>
-                    <div class="host-section">
+                    <div class="player-section">
                     {{#each players}}
-                        <p class="host">
+                        <p class="player">
                         {{this}}
                         </p>
                     {{/each}}

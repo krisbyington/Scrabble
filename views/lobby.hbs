@@ -5,9 +5,6 @@
         <div class="player-section">
           <p class="player-text">Username</p>
         </div>
-        <div class="player-section">
-          <p class="player-text">Unready</p>
-        </div>
       </div>
     <div class="lobby-info">
     <div class="player-list" id="player-list">
@@ -16,9 +13,6 @@
           <div class="player-section">
             <p class="player-text" id="{{username}}">{{username}}</p>
           </div>
-          <div class="player-section">
-            <p class="ready-text">Not Ready</p>
-          </div>
         </div>
       {{/each}}
     </div>
@@ -26,12 +20,6 @@
   <div class="lobby-button-container">
     <div class="lobby-outer-button"  >
       <button class="lobby-button" onclick="startGame({{gameId}})">Start Game</button>
-    </div>
-    <div class="lobby-outer-button" onclick="makeReady({{gameId}})">
-      <button class="lobby-button">Ready</button>
-    </div>
-    <div class="lobby-outer-button">
-      <button class="lobby-button" onclick="makeUnready({{gameId}})">Not Ready</button>
     </div>
     <form class="lobby-outer-button" action="/lobby/leave/{{gameId}}">
       <button class="lobby-button" type="submit">Leave</button>

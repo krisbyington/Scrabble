@@ -82,20 +82,33 @@
     margin:auto;
     padding:auto;
   }
-  
-  .host-section {
+
+  .id-section-title {
     display: flex;
-    width:60%;
+    width:20%;
     border-radius: 5px;
     justify-content: center;
     align-items: center;
     align-self: center;
     justify-self:center;
     margin:auto;
+    margin-left:0px;
     padding:auto;
   }
   
-  .host {
+  .player-section {
+    display: flex;
+    width:60%;
+    border-radius: 5px;
+    justify-content: space-around;
+    align-items:space-around;
+    align-self: center;
+    justify-self:center;
+    margin:auto;
+    padding:auto;
+  }
+  
+  .player {
     display:flex;
     align-self: center;
     justify-self:center;
