@@ -52,6 +52,7 @@ router.get("/:id", async (request, response) => {
   var currentTurn;
   var cells;
   var tileCount;
+  var players;
 
   game.getPlayerHand(gameId, userId)
     .then(tileCountResult => {
@@ -68,6 +69,7 @@ router.get("/:id", async (request, response) => {
                   game.getGameUsers2(gameId)
                     .then(gameUsers => {
                       var currentUser;
+                      players = gameUsers;
                       for (i = 0; i < gameUsers.length; i++) {
                         if (gameUsers[i].user_id == userId) {
                           currentUser = gameUsers[i];
@@ -93,7 +95,8 @@ router.get("/:id", async (request, response) => {
                         tilesInBag: gameTiles.getNumTilesInBag,
                         messages: chat.getMessages(),
                         userId: userId,
-                        gameId: gameId
+                        gameId: gameId,
+                        players:players,
                       });
                     });
                 })

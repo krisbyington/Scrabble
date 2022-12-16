@@ -6,10 +6,6 @@ const selection = [];
 const words = [];
 let word = [];
 
-function clickTest() {
-  console.log(`clicked `);
-}
-
 document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
@@ -116,6 +112,16 @@ async function getUserInput() {
   })
 }
 
+function updatePlayerScore(score, id) {
+  let playerList = document.getElementById("player-data");
+  for(let player of playerList.children){
+    if(player.id == id && player.className == "player-score"){
+      player.innerText = score;
+    }
+  }
+
+}
+
 socket.on("invalid-word", async data => {
   const x = await getUserInput()
   const username = x.username
@@ -126,10 +132,11 @@ socket.on("valid-word", async data => {
   game_id = data.id
   fillBoardFromDB(data.tileDataForHTML);
   replenishHand(data);
+  console.log(data);
   const x = await getUserInput()
   const username = x.username
   const score = data.playerScore[0].score
-  alert(` Valid Word! Current Player has ${score} points.`);
+  updatePlayerScore(score, data.playerId);
   return await fetch(`${window.location.pathname}/nextTurn`, {
     body: JSON.stringify(word),
     method: "post",
@@ -233,6 +240,6 @@ window.onload = (event) => {
   const url = (event.target.URL)
   const targetIdx = url.indexOf('/game')
   const id = url.slice(targetIdx + 6);
-  //why is this data bot being used anymore? 
+  //why is this data not being used anymore? 
   updateBoard();
 }

@@ -280,7 +280,7 @@
     border-bottom-right-radius: 0;
   }
   
-  .player-data{
+  #player-data{
     grid-column-start: 2;
     grid-column-end: 3;
     display:grid;
@@ -288,7 +288,7 @@
     grid-template-rows:1fr;
     flex-direction:row;
     border: 1px solid #000;
-  grid-gap: 1px;
+    grid-gap: 1px;
     border-color:black;
     border-radius:20px;
   }
