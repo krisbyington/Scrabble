@@ -6,6 +6,14 @@ const selection = [];
 const words = [];
 let word = [];
 
+let chatButton = document.getElementById("send-text-game");
+
+chatButton.addEventListener("keydown", (event) => {
+  if (event.code === "Enter") { 
+      chatButton.click();
+  }
+});
+
 document
   .getElementById("play-word-button")
   .addEventListener("click", (event) => {
